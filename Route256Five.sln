@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33403.182
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{10CD079B-D7E7-450E-B866-5FD92A2053EB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{CEEA9801-B0D4-42F8-88B2-0F7C49D4A68A}"
+	ProjectSection(SolutionItems) = preProject
+		.gitlab-ci.yml = .gitlab-ci.yml
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ozon.Route256.Five.OrderService", "src\Ozon.Route256.Five.OrderService\Ozon.Route256.Five.OrderService.csproj", "{A88B5FC7-9C43-433E-B9ED-B57AA20BCEB1}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{E451596E-3700-4217-B4C4-EDCD97D9ECAF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{99D8D32E-7E6E-435C-8F52-1986BFB229D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ozon.Route256.Five.OrderService.Tests", "tests\Ozon.Route256.Five.OrderService.Tests\Ozon.Route256.Five.OrderService.Tests.csproj", "{986EE995-7991-475F-AB58-CA61AD0B7B99}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A88B5FC7-9C43-433E-B9ED-B57AA20BCEB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A88B5FC7-9C43-433E-B9ED-B57AA20BCEB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A88B5FC7-9C43-433E-B9ED-B57AA20BCEB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A88B5FC7-9C43-433E-B9ED-B57AA20BCEB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E451596E-3700-4217-B4C4-EDCD97D9ECAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E451596E-3700-4217-B4C4-EDCD97D9ECAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E451596E-3700-4217-B4C4-EDCD97D9ECAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E451596E-3700-4217-B4C4-EDCD97D9ECAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{986EE995-7991-475F-AB58-CA61AD0B7B99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{986EE995-7991-475F-AB58-CA61AD0B7B99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{986EE995-7991-475F-AB58-CA61AD0B7B99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{986EE995-7991-475F-AB58-CA61AD0B7B99}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A88B5FC7-9C43-433E-B9ED-B57AA20BCEB1} = {10CD079B-D7E7-450E-B866-5FD92A2053EB}
+		{986EE995-7991-475F-AB58-CA61AD0B7B99} = {99D8D32E-7E6E-435C-8F52-1986BFB229D0}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A9A9CE32-B649-401E-9977-2C083FFBF344}
+	EndGlobalSection
+EndGlobal

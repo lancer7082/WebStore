@@ -1,0 +1,21 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "order-service": "StartWithoutDebugging",
+        "service-discovery": "StartWithoutDebugging",
+        "adminer": "StartWithoutDebugging",
+        "customers-db": "StartWithoutDebugging",
+        "customer-service": "StartWithoutDebugging",
+        "jaeger": "StartWithoutDebugging",
+        "kafka": "StartWithoutDebugging",
+        "logistics-simulator": "StartWithoutDebugging",
+        "orders-db": "StartWithoutDebugging",
+        "orders-generator": "StartWithoutDebugging",
+        "zookeeper": "StartWithoutDebugging"
+      }
+    }
+  }
+}

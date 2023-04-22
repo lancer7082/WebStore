@@ -1,0 +1,15 @@
+﻿syntax = "proto3";
+option csharp_namespace = "Ozon.Route256.Five.OrderService.API.Proto";
+
+import "API/Proto/address.proto";
+
+message Customer
+{
+  int64 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string mobile_number = 4;
+  string email = 5;
+  Address default_address = 6;
+  repeated Address addresses = 7;
+}

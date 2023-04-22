@@ -1,0 +1,1 @@
+docker-compose  -f "docker-compose-sd.yml" -p ozon-route256-five --ansi never up -d --build --remove-orphans

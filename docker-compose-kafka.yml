@@ -1,0 +1,137 @@
+version: '3.9'
+
+services:
+    customer-service:
+        environment:
+            ROUTE256_ConnectionStrings:SdUrl: http://service-discovery:80
+            MIGRATE: False
+        #image: gitlab-registry.ozon.dev/cs/classroom-5/teachers/five/customer-service:latest
+        image: ozon.route256.five.customerservice
+        ports:
+            - "5085:80"
+        restart: unless-stopped 
+        depends_on:
+            - service-discovery
+            - customers-db-1
+            - customers-db-2
+
+    logistics-simulator:
+        environment: 
+            ROUTE256_Kafka:BootstrapServers: kafka:29092
+            ROUTE256_Redis:ConnectionString: redis:6379,abortConnect=false
+        image: gitlab-registry.ozon.dev/cs/classroom-5/teachers/five/logistics-simulator:latest
+        ports:
+            - "5086:5080"
+        restart: unless-stopped 
+        depends_on:
+            - kafka
+            - redis
+
+    orders-generator:
+        environment: 
+            ROUTE256_CUSTOMER_SERVICE: http://customer-service:80
+            ROUTE256_KAFKA_BROKERS: kafka:29092
+            ROUTE256_ORDER_REQUEST_TOPIC: pre_orders
+            ROUTE256_ORDER_SOURCE: 1
+        image: gitlab-registry.ozon.dev/cs/classroom-5/teachers/five/orders-generator:latest
+        ports:
+            - "5087:80"
+        restart: unless-stopped 
+        depends_on:
+            - kafka
+            - customer-service
+
+    service-discovery:
+        environment:
+          ASPNETCORE_ENVIRONMENT: Development
+          ROUTE256_DB_STATE: customers-cluster:0-3:customers-db-1:5432;customers-cluster:4-7:customers-db-2:5432;migrate-customers-cluster:0-3:localhost:5401;migrate-customers-cluster:4-7:localhost:5402;orders-cluster:0-3:localhost:5403;orders-cluster:4-7:localhost:5404;migrate-customers-cluster:0-3:localhost:5401;migrate-customers-cluster:4-7:localhost:5402;migrate-orders-cluster:0-3:localhost:5403;migrate-orders-cluster:4-7:localhost:5404;
+          ROUTE256_UPDATE_TIMEOUT: 10
+        image: gitlab-registry.ozon.dev/cs/classroom-5/teachers/five/service-discovery:latest
+        ports:
+            - "5088:80"
+        restart: always
+        depends_on:
+            - customers-db-1
+            - customers-db-2
+            - orders-db-1
+            - orders-db-2
+
+    customers-db-1:
+        image: postgres:latest
+        ports:
+            - "5401:5432"
+        environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=postgres
+          - POSTGRES_DB=customers
+
+    customers-db-2:
+        image: postgres:latest
+        ports:
+            - "5402:5432"
+        environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=postgres
+          - POSTGRES_DB=customers
+        
+    orders-db-1:
+        image: postgres:latest
+        ports:
+            - "5403:5432"
+        environment:
+            - POSTGRES_USER=admin
+            - POSTGRES_PASSWORD=admin
+            - POSTGRES_DB=orders_db
+        restart: always                
+    
+    orders-db-2:
+        image: postgres:latest
+        ports:
+            - "5404:5432"
+        environment:
+            - POSTGRES_USER=admin
+            - POSTGRES_PASSWORD=admin
+            - POSTGRES_DB=orders_db
+        restart: always 
+
+    adminer:
+        image: adminer
+        ports:
+            - "6432:8080"
+        
+    zookeeper:
+        image: confluentinc/cp-zookeeper:latest
+        ports:
+            - "2181:2181"
+        environment:
+            - ZOOKEEPER_CLIENT_PORT=2181
+            - ZOOKEEPER_TICK_TIME=2000
+        restart: always
+
+    kafka:
+        image: confluentinc/cp-kafka:latest
+        ports:
+            -  "9092:9092"
+        environment:
+            - KAFKA_BROKER_ID=1
+            - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+            - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+            - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
+            - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+            - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
+            - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
+        depends_on:
+            - zookeeper
+        restart: always 
+
+    redis:
+        image: redis:6.2-alpine
+        restart: always
+        ports:
+            - "6379:6379"
+    
+    jaeger:
+        image: jaegertracing/all-in-one
+        ports:
+            - "6831:6831/udp"
+            - "16686:16686"            

@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+option csharp_namespace = "Ozon.Route256.Five.OrderService.API.Proto";
+
+message Address
+{
+  string region = 1;
+  string city = 2;
+  string street = 3;
+  string building = 4;
+  string apartment = 5;
+  double latitude = 6;
+  double longitude = 7;
+}

@@ -1,0 +1,21 @@
+﻿syntax = "proto3";
+option csharp_namespace = "Ozon.Route256.Five.OrderService.API.Proto";
+
+//import "google/protobuf/empty.proto";
+import "API/Proto/order.proto";
+
+service OrderService
+{
+	// Получение полной информации по заказу
+	rpc GetOrder(GetOrderRequest) returns (GetOrderResponse);
+}
+
+message GetOrderRequest
+{
+	int64 order_id = 1; // Id заказа
+}
+
+message GetOrderResponse
+{
+	Order order = 1; // Заказ
+}

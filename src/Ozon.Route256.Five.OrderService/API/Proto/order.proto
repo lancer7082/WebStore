@@ -1,0 +1,38 @@
+﻿syntax = "proto3";
+option csharp_namespace = "Ozon.Route256.Five.OrderService.API.Proto";
+
+import "google/protobuf/timestamp.proto";
+import "API/Proto/customer.proto";
+import "API/Proto/address.proto";
+
+message Order
+{    
+    int64 order_id                  = 1; // Id заказа
+    int32 quantity                  = 2; // Количество товаров в заказе
+    double sum                      = 3; // Общая сумма заказа
+    double weight                   = 4; // Общий вес заказа
+    OrderSource order_source        = 5; // Тип заказа
+    google.protobuf.Timestamp date  = 6; // Дата заказа
+    string region                   = 7; // Откуда сделан заказ (регион)
+    OrderState order_state          = 8; // Статус заказа    
+    Customer customer               = 9; // Клиент
+    Address address                 = 10; // Адрес доставки
+}
+
+enum OrderState
+{
+    ORDER_STATE_NONE                = 0;
+    ORDER_STATE_CREATED             = 1;
+    ORDER_STATE_SENT_TO_CUSTOMER    = 2;
+    ORDER_STATE_DELIVERED           = 3;
+    ORDER_STATE_LOST                = 4;
+    ORDER_STATE_CANCELLED           = 5;
+}
+
+enum OrderSource
+{
+    ORDER_SOURCE_NONE       = 0;
+    ORDER_SOURCE_WEB_SITE   = 1;
+    ORDER_SOURCE_MOBILE     = 2;
+    ORDER_SOURCE_API        = 3;
+}

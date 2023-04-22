@@ -1,0 +1,70 @@
+version: '3.9'
+
+services:
+
+    customer-service:
+        environment:
+            ROUTE256_ConnectionStrings:SdUrl: http://service-discovery:80
+            MIGRATE: False
+        image: gitlab-registry.ozon.dev/cs/classroom-5/teachers/five/customer-service:latest
+        #image: ozon.route256.five.customerservice
+        ports:
+            - "5085:80"
+        restart: unless-stopped 
+        depends_on:
+            - service-discovery
+            - customers-db-1
+            - customers-db-2
+
+    service-discovery:
+        environment:
+          ASPNETCORE_ENVIRONMENT: Development
+          ROUTE256_DB_STATE: customers-cluster:0-3:customers-db-1:5432;customers-cluster:4-7:customers-db-2:5432;migrate-customers-cluster:0-3:localhost:5401;migrate-customers-cluster:4-7:localhost:5402;orders-cluster:0-3:orders-db-1:5432;orders-cluster:4-7:orders-db-2:5432;migrate-customers-cluster:0-3:localhost:5401;migrate-customers-cluster:4-7:localhost:5402;migrate-orders-cluster:0-3:localhost:5403;migrate-orders-cluster:4-7:localhost:5404;
+          ROUTE256_UPDATE_TIMEOUT: 10
+        image: gitlab-registry.ozon.dev/cs/classroom-5/teachers/five/service-discovery:latest
+        ports:
+            - "5088:80"
+        restart: always
+        depends_on:
+            - customers-db-1
+            - customers-db-2
+            - orders-db-1
+            - orders-db-2
+
+    customers-db-1:
+        image: postgres:latest
+        ports:
+            - "5401:5432"
+        environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=postgres
+          - POSTGRES_DB=customers
+
+    customers-db-2:
+        image: postgres:latest
+        ports:
+            - "5402:5432"
+        environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=postgres
+          - POSTGRES_DB=customers
+        
+    orders-db-1:
+        image: postgres:latest
+        ports:
+            - "5403:5432"
+        environment:
+            - POSTGRES_USER=admin
+            - POSTGRES_PASSWORD=admin
+            - POSTGRES_DB=orders_db
+        restart: always                
+    
+    orders-db-2:
+        image: postgres:latest
+        ports:
+            - "5404:5432"
+        environment:
+            - POSTGRES_USER=admin
+            - POSTGRES_PASSWORD=admin
+            - POSTGRES_DB=orders_db
+        restart: always 

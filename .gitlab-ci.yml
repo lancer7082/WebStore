@@ -1,0 +1,19 @@
+stages:
+  - Build
+  - Test
+
+dotnet build:
+    stage: Build
+    image: mcr.microsoft.com/dotnet/sdk:6.0
+    needs: []
+    script:
+        - dotnet restore src/*
+        - dotnet build src/* --no-restore
+
+test:
+  stage: Test
+  image: mcr.microsoft.com/dotnet/sdk:6.0
+  needs: ["dotnet build"]
+  script:
+    - dotnet restore tests/Ozon.Route256.Five.OrderService.Tests/Ozon.Route256.Five.OrderService.Tests.csproj
+    - dotnet test tests/Ozon.Route256.Five.OrderService.Tests/Ozon.Route256.Five.OrderService.Tests.csproj --no-restore
